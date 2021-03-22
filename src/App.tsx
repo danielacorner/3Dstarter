@@ -1,6 +1,5 @@
 import React, { Suspense, useEffect } from "react";
 import { Button, Typography } from "@material-ui/core";
-import WarningOutlined from "@material-ui/icons/WarningOutlined";
 import { CanvasAndSceneEmpty } from "./CanvasAndSceneEmpty";
 import { useStore } from "./store";
 import { LoadingIndicator } from "./components/Scene/LoadingIndicator";
@@ -107,14 +106,8 @@ function LazyLoadedScene() {
       >
         <div className="title">
           <Typography style={{ textAlign: "center" }} variant="h3">
-            vr-thrusters
+            3Dstarter
           </Typography>
-          <div className="requirements">
-            <WarningOutlined />
-            <Typography variant="body2">
-              Requirements: 50MB download, 1GB memory
-            </Typography>
-          </div>
         </div>
         <Button onClick={() => set({ started: true })} variant="outlined">
           Start
