@@ -6,14 +6,22 @@ import * as THREE from "three";
 import { VRCanvas } from "@react-three/xr";
 import { BREAKPOINT_TABLET } from "./utils/constants";
 
-export const INITIAL_CAMERA_POSITION = [0, 0, 15];
-export const CANVAS_PROPS = {
+const INITIAL_CAMERA_POSITION = [0, 0, 15];
+const CANVAS_PROPS = {
   onCreated: ({ gl }) => {
     gl.shadowMap.enabled = true;
     gl.shadowMap.type = THREE.PCFShadowMap;
   },
   gl: { antialias: false, alpha: false },
 };
+const POSFIXED = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+};
+
 export default function CanvasAndScene({ renderProteins = true }) {
   const windowSize = useWindowSize();
   //  // This one makes the camera move in and out
@@ -24,24 +32,30 @@ export default function CanvasAndScene({ renderProteins = true }) {
   return (
     <>
       <Controls.Provider>
-        <Controls.Canvas
+        <VRCanvas
           {...CANVAS_PROPS}
           style={{
             height: windowSize.height,
             width: windowSize.width,
-            opacity: 0.5,
+            ...(POSFIXED as any),
           }}
-          camera={{ fov: 75, position: INITIAL_CAMERA_POSITION }}
-        ></Controls.Canvas>
-        <VRCanvas
-          {...CANVAS_PROPS}
-          style={{ height: windowSize.height, width: windowSize.width }}
           camera={{ fov: 75, position: INITIAL_CAMERA_POSITION as any }}
         >
           <Scene />
         </VRCanvas>
+        {/* <Controls.Canvas
+          {...CANVAS_PROPS}
+          style={{
+            height: windowSize.height,
+            width: windowSize.width,
+            ...POSFIXED,
+            opacity: 0.1,
+            pointerEvents: "none",
+          }}
+          camera={{ fov: 75, position: INITIAL_CAMERA_POSITION }}
+        ></Controls.Canvas> */}
         {process.env.NODE_ENV === "development" && isTabletOrLarger ? (
-          <Controls />
+          <Controls style={{ pointerEvents: "auto" }} />
         ) : null}
       </Controls.Provider>
       {/* <HideHpControls /> */}
