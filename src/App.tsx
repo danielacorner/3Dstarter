@@ -8,6 +8,7 @@ import { render } from "react-dom";
 import MemoryStats from "react-memorystats";
 import { useLocalStorageState } from "./utils/useLocalStorageState";
 import styled from "styled-components/macro";
+
 function App() {
   useMount(() => {
     render(

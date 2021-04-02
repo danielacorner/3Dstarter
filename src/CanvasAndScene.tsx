@@ -3,8 +3,24 @@ import { Controls } from "react-three-gui";
 import Scene from "./components/Scene/Scene";
 import { useWindowSize } from "./utils/hooks";
 import * as THREE from "three";
+import { VRCanvas } from "@react-three/xr";
+import { BREAKPOINT_TABLET } from "./utils/constants";
 
-import { BREAKPOINT_TABLET, INITIAL_CAMERA_POSITION } from "./utils/constants";
+const INITIAL_CAMERA_POSITION = [0, 0, 15];
+const CANVAS_PROPS = {
+  onCreated: ({ gl }) => {
+    gl.shadowMap.enabled = true;
+    gl.shadowMap.type = THREE.PCFShadowMap;
+  },
+  gl: { antialias: false, alpha: false },
+};
+const POSFIXED = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+};
 
 export default function CanvasAndScene({ renderProteins = true }) {
   const windowSize = useWindowSize();
@@ -16,19 +32,30 @@ export default function CanvasAndScene({ renderProteins = true }) {
   return (
     <>
       <Controls.Provider>
-        <Controls.Canvas
-          onCreated={({ gl }) => {
-            gl.shadowMap.enabled = true;
-            gl.shadowMap.type = THREE.PCFShadowMap;
+        <VRCanvas
+          {...CANVAS_PROPS}
+          style={{
+            height: windowSize.height,
+            width: windowSize.width,
+            ...(POSFIXED as any),
           }}
-          gl={{ antialias: false, alpha: false }}
-          style={{ height: windowSize.height, width: windowSize.width }}
-          camera={{ fov: 75, position: INITIAL_CAMERA_POSITION }}
+          camera={{ fov: 75, position: INITIAL_CAMERA_POSITION as any }}
         >
           <Scene />
-        </Controls.Canvas>
+        </VRCanvas>
+        {/* <Controls.Canvas
+          {...CANVAS_PROPS}
+          style={{
+            height: windowSize.height,
+            width: windowSize.width,
+            ...POSFIXED,
+            opacity: 0.1,
+            pointerEvents: "none",
+          }}
+          camera={{ fov: 75, position: INITIAL_CAMERA_POSITION }}
+        ></Controls.Canvas> */}
         {process.env.NODE_ENV === "development" && isTabletOrLarger ? (
-          <Controls />
+          <Controls style={{ pointerEvents: "auto" }} />
         ) : null}
       </Controls.Provider>
       {/* <HideHpControls /> */}
