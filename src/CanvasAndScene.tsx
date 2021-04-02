@@ -3,9 +3,17 @@ import { Controls } from "react-three-gui";
 import Scene from "./components/Scene/Scene";
 import { useWindowSize } from "./utils/hooks";
 import * as THREE from "three";
+import { VRCanvas } from "@react-three/xr";
+import { BREAKPOINT_TABLET } from "./utils/constants";
 
-import { BREAKPOINT_TABLET, INITIAL_CAMERA_POSITION } from "./utils/constants";
-
+export const INITIAL_CAMERA_POSITION = [0, 0, 15];
+export const CANVAS_PROPS = {
+  onCreated: ({ gl }) => {
+    gl.shadowMap.enabled = true;
+    gl.shadowMap.type = THREE.PCFShadowMap;
+  },
+  gl: { antialias: false, alpha: false },
+};
 export default function CanvasAndScene({ renderProteins = true }) {
   const windowSize = useWindowSize();
   //  // This one makes the camera move in and out
@@ -17,16 +25,21 @@ export default function CanvasAndScene({ renderProteins = true }) {
     <>
       <Controls.Provider>
         <Controls.Canvas
-          onCreated={({ gl }) => {
-            gl.shadowMap.enabled = true;
-            gl.shadowMap.type = THREE.PCFShadowMap;
+          {...CANVAS_PROPS}
+          style={{
+            height: windowSize.height,
+            width: windowSize.width,
+            opacity: 0.5,
           }}
-          gl={{ antialias: false, alpha: false }}
-          style={{ height: windowSize.height, width: windowSize.width }}
           camera={{ fov: 75, position: INITIAL_CAMERA_POSITION }}
+        ></Controls.Canvas>
+        <VRCanvas
+          {...CANVAS_PROPS}
+          style={{ height: windowSize.height, width: windowSize.width }}
+          camera={{ fov: 75, position: INITIAL_CAMERA_POSITION as any }}
         >
           <Scene />
-        </Controls.Canvas>
+        </VRCanvas>
         {process.env.NODE_ENV === "development" && isTabletOrLarger ? (
           <Controls />
         ) : null}
