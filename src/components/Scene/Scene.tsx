@@ -82,7 +82,7 @@ function SomeGLTFComponent() {
     args: 1, // ? https://codesandbox.io/s/r3f-cannon-instanced-physics-devf8?file=/src/index.js
   }));
 
-  const myGLTF = useGLTF("./gltfs/shipInClouds/scene.gtlf") as any;
+  const myGLTF = useGLTF("/public/gltfs/shipInClouds/scene.gtlf") as any;
 
   return (
     <instancedMesh

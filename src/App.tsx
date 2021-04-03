@@ -9,24 +9,28 @@ import MemoryStats from "react-memorystats";
 import { useLocalStorageState } from "./utils/useLocalStorageState";
 import styled from "styled-components/macro";
 function App() {
+  useSaveSettingsToLocalStorage();
+  return (
+    <div className="App">
+      <LoadingIndicator />
+      <LazyLoadedScene />
+      {/* <GuidedTour /> */}
+      <MemoryStatsComponent />
+    </div>
+  );
+}
+
+export default App;
+
+function MemoryStatsComponent() {
   useMount(() => {
     render(
       <MemoryStats corner="topLeft" />,
       document.getElementById("memoryStats")
     );
   });
-  return (
-    <div className="App">
-      <LoadingIndicator />
-      <LazyLoadedScene />
-      <div id="memoryStats"></div>
-      {/* <GuidedTour /> */}
-      <SaveControlsSettingsToLocalStorage />
-    </div>
-  );
+  return <div id="memoryStats" />;
 }
-
-export default App;
 
 const CanvasAndSceneLazy = React.lazy(() => import("./CanvasAndScene"));
 
@@ -119,7 +123,7 @@ function LazyLoadedScene() {
 
 const StyledDiv = styled.div``;
 
-function SaveControlsSettingsToLocalStorage() {
+function useSaveSettingsToLocalStorage() {
   const set = useStore((s) => s.set);
   const soundOn = useStore((s) => s.soundOn);
 
@@ -143,6 +147,4 @@ function SaveControlsSettingsToLocalStorage() {
   useEffect(() => {
     setSettings({ soundOn });
   }, [soundOn, setSettings]);
-
-  return null;
 }
