@@ -1,10 +1,11 @@
 import React, { Suspense, useState } from "react";
-import { Physics } from "@react-three/cannon";
-import { Box, OrbitControls, RoundedBox } from "@react-three/drei";
+import { Physics, useSphere } from "@react-three/cannon";
+import { Box, OrbitControls, RoundedBox, useGLTF } from "@react-three/drei";
 import { Lighting } from "./Lighting";
 import { useAudioTrack } from "../music/useAudioTrack";
 import { animated, useSpring } from "react-spring/three";
 import { useControl } from "react-three-gui";
+import { Walls } from "./Walls";
 
 const Scene = () => {
   // useCameraWobble();
@@ -47,8 +48,9 @@ function PhysicsScene() {
         />
       </animated.group>
       <animated.mesh>
-        <Box args={[2, 2, 2]} position={[-5, -5, -5]} />
+        <SomeGLTFComponent />
       </animated.mesh>
+      <Walls />
     </Physics>
   );
 }
@@ -67,6 +69,49 @@ function BigRedButton({ onClick, children = null, ...rest }) {
       <meshBasicMaterial color="red" />
       {children}
     </RoundedBox>
+  );
+}
+
+function SomeGLTFComponent() {
+  const [active, setActive] = useState(false);
+
+  const [ref] = useSphere(() => ({
+    // rotation: [-Math.PI / 2, 0, 0],
+    mass: 1,
+    position: [1, 2, 3],
+    args: 1, // ? https://codesandbox.io/s/r3f-cannon-instanced-physics-devf8?file=/src/index.js
+  }));
+
+  const myGLTF = useGLTF("./gltfs/shipInClouds/scene.gtlf") as any;
+
+  return (
+    <instancedMesh
+      ref={ref}
+      castShadow={true}
+      onPointerOver={() => {
+        setActive(true);
+      }}
+      onPointerOut={() => {
+        setActive(false);
+      }}
+      // args={[geometry, material, Math.ceil(numParticles)]}
+      renderOrder={2}
+      // scale={springProps.scale}
+      position={[2, 3, 2]}
+    >
+      <primitive object={myGLTF.scene} attach="geometry" />
+      {/* <primitive object={material} attach="material" /> */}
+      {/* <instancedBufferGeometry
+  attach="geometry"
+  // args={[null, null, null]}
+></instancedBufferGeometry>
+<instancedBufferAttribute
+  attachObject={["attributes", "geometry"]}
+  attach="geometry"
+  args={[null, null, null]}
+/> */}
+      {/* <ChildParticle attach="geometry" /> */}
+    </instancedMesh>
   );
 }
 

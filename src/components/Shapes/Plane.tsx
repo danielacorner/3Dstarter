@@ -8,6 +8,7 @@ export function Plane({
   widthSegments = 1,
   heightSegments = 1,
   reflect = false,
+  children = null,
   ...rest
 }) {
   const [ref] = usePlane(() => ({
@@ -51,6 +52,7 @@ export function Plane({
 				// opacity={0.5}
 				depthTest={false}
 			/> */}
+      {children}
     </mesh>
   );
 }
