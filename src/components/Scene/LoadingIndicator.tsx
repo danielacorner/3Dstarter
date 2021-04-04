@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { CircularProgress, LinearProgress } from "@material-ui/core";
-import { useProgress } from "@react-three/drei";
+import { Text, useProgress } from "@react-three/drei";
 import styled from "styled-components/macro";
 import { useFrame } from "react-three-fiber";
 import { CanvasAndSceneEmpty } from "../../CanvasAndSceneEmpty";
@@ -16,7 +16,7 @@ export function LoadingIndicator() {
     >
       {JSON.stringify(errors)}
     </div>
-  ) : active ? (
+  ) : active || true ? (
     <>
       <LoadingIndicatorStyles>
         <div>
@@ -31,15 +31,28 @@ export function LoadingIndicator() {
       />
       <CanvasAndSceneEmpty isLoadingIndicator={true}>
         <SpinningParticle />
+        {/* Text props storybook: https://drei.pmnd.rs/?path=/story/abstractions-text--text-st */}
+        <Text
+          {...{
+            position: [0, -2, 0],
+            rotation: [0, Math.PI / 2, 0],
+            fontSize: 0.5,
+            color: "#3d3d3d",
+          }}
+        >
+          Loading...
+        </Text>
       </CanvasAndSceneEmpty>
       <CenteredSpinner />
     </>
   ) : null;
 }
+
 const SPEED_Y = 0.5;
 const SPEED_X = 0.2;
 const AMPLITUDE_Y = 1;
 const AMPLITUDE_X_INV = 0.01;
+
 function SpinningParticle() {
   const scale = useStore((s) => s.scale);
   const scalePct = (scale - MIN_SCALE) / (MAX_SCALE - MIN_SCALE);
@@ -47,8 +60,6 @@ function SpinningParticle() {
   const ref1 = useRef(null as any);
   const ref2 = useRef(null as any);
   const ref3 = useRef(null as any);
-  const ref4 = useRef(null as any);
-  const ref5 = useRef(null as any);
 
   useFrame(({ clock }) => {
     const time = clock.getElapsedTime();
@@ -66,14 +77,6 @@ function SpinningParticle() {
     ref3.current.rotation.x = Math.sin(time * SPEED_Y) * AMPLITUDE_Y;
     ref3.current.rotation.y =
       ref3.current.rotation.y + Math.cos(time * SPEED_X) * AMPLITUDE_X_INV;
-
-    ref4.current.rotation.x = -Math.sin(time * SPEED_Y) * AMPLITUDE_Y;
-    ref4.current.rotation.y =
-      ref4.current.rotation.y - Math.cos(time * SPEED_X) * AMPLITUDE_X_INV;
-
-    ref5.current.rotation.x = -Math.sin(time * SPEED_Y) * AMPLITUDE_Y;
-    ref5.current.rotation.y =
-      ref5.current.rotation.y + Math.cos(time * SPEED_X) * AMPLITUDE_X_INV;
   });
   return (
     <>
@@ -114,61 +117,6 @@ function SpinningParticle() {
           reflectivity={1}
         />
       </mesh>
-      <mesh ref={ref4}>
-        <icosahedronBufferGeometry args={[scalePct * 4, 1]} />
-        <meshPhysicalMaterial
-          color="tomato"
-          // wireframe={true}
-          opacity={0.08}
-          transparent={true}
-          depthTest={false}
-          flatShading={true}
-          roughness={0.4}
-          vertexColors={true}
-          reflectivity={1}
-        />
-      </mesh>
-      <mesh ref={ref5}>
-        <icosahedronBufferGeometry args={[scalePct * 14, 2]} />
-        <meshPhysicalMaterial
-          opacity={0.04}
-          transparent={true}
-          depthTest={false}
-          flatShading={true}
-          roughness={0.4}
-          vertexColors={true}
-          reflectivity={1}
-          // wireframe={true}
-        />
-      </mesh>
-      <mesh>
-        <icosahedronBufferGeometry args={[scalePct * 100, 5]} />
-        <meshPhysicalMaterial
-          color="rebeccapurple"
-          opacity={0.018}
-          transparent={true}
-          depthTest={false}
-          flatShading={true}
-          roughness={0.4}
-          vertexColors={true}
-          reflectivity={1}
-          wireframe={true}
-        />
-      </mesh>
-      <mesh>
-        <icosahedronBufferGeometry args={[scalePct * 600, 10]} />
-        <meshPhysicalMaterial
-          color="cornflowerblue"
-          opacity={0.01}
-          transparent={true}
-          depthTest={false}
-          flatShading={true}
-          roughness={0.4}
-          vertexColors={true}
-          reflectivity={1}
-          wireframe={true}
-        />
-      </mesh>
     </>
   );
 }
@@ -199,6 +147,7 @@ const LoadingIndicatorStyles = styled.div`
 // }
 
 const StyledDiv = styled.div`
+  opacity: 0.2;
   pointer-events: none;
   position: fixed;
   top: 0;
