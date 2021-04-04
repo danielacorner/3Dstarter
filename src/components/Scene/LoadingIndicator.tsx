@@ -16,7 +16,7 @@ export function LoadingIndicator() {
     >
       {JSON.stringify(errors)}
     </div>
-  ) : active || true ? (
+  ) : active ? (
     <>
       <LoadingIndicatorStyles>
         <div>

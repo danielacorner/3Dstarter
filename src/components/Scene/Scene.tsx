@@ -6,6 +6,7 @@ import { useAudioTrack } from "../music/useAudioTrack";
 import { animated, useSpring } from "react-spring/three";
 import { useControl } from "react-three-gui";
 import { Walls } from "./Walls";
+import Shiba from "../generated-by-gltfjsx/Shiba";
 
 const Scene = () => {
   // useCameraWobble();
@@ -82,7 +83,8 @@ function SomeGLTFComponent() {
     args: 1, // ? https://codesandbox.io/s/r3f-cannon-instanced-physics-devf8?file=/src/index.js
   }));
 
-  const myGLTF = useGLTF("/public/gltfs/shipInClouds/scene.gtlf") as any;
+  // const myGLTF = useGLTF("/models/shiba/scene.gtlf") as any;
+  // console.log("🌟🚨 ~ SomeGLTFComponent ~ myGLTF", myGLTF);
 
   return (
     <instancedMesh
@@ -99,7 +101,8 @@ function SomeGLTFComponent() {
       // scale={springProps.scale}
       position={[2, 3, 2]}
     >
-      <primitive object={myGLTF.scene} attach="geometry" />
+      <Shiba />
+      {/* <primitive object={myGLTF.scene} attach="geometry" /> */}
       {/* <primitive object={material} attach="material" /> */}
       {/* <instancedBufferGeometry
   attach="geometry"
