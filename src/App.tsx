@@ -3,10 +3,10 @@ import { Button, Typography } from "@material-ui/core";
 import { CanvasAndSceneEmpty } from "./CanvasAndSceneEmpty";
 import { useStore } from "./store";
 import { LoadingIndicator } from "./components/Scene/LoadingIndicator";
-import { useMount } from "./utils/utils";
+import { useMount } from "./utils/hooks";
 import { render } from "react-dom";
 import MemoryStats from "react-memorystats";
-import { useLocalStorageState } from "./utils/useLocalStorageState";
+import { useLocalStorageState } from "./utils/hooks";
 import styled from "styled-components/macro";
 function App() {
   useSaveSettingsToLocalStorage();

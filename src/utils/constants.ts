@@ -1,5 +1,6 @@
 import { useMediaQuery } from "@material-ui/core";
 
+export const PADDING = 6;
 export const INITIAL_CAMERA_POSITION = [0, 0, 15];
 export const WORLD_RADIUS = 5;
 export const SCALE = 0.001;
@@ -11,6 +12,7 @@ export const MAX_SCALE = 0.03;
 export const useIsTabletOrLarger = () =>
   useMediaQuery(`(min-width: ${BREAKPOINT_TABLET}px)`);
 
+/** put this on a page or element for a customized scrollbar */
 export const CUSTOM_SCROLLBAR_CSS = `
     overflow: overlay;
     overflow-x: hidden;
