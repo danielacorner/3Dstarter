@@ -29,3 +29,5 @@ yarn-error.log*
 
 *.gltf
 *.glb
+
+/public/gltfs/**/*
