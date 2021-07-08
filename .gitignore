@@ -27,5 +27,7 @@ yarn-error.log*
 
 .eslintcache
 
-*.gltf
+# *.gltf
 *.glb
+
+# /public/gltfs/**/*
